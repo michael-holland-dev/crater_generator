@@ -1,7 +1,7 @@
 import torch
 import os
 
-class RunCheckpoint:
+class TrainCheckpoint:
     def __init__(
             self,
             model,
@@ -29,7 +29,7 @@ class RunCheckpoint:
         epoch_count = save_data["epoch_count"]
         batch_size = save_data["batch_size"]
 
-        return RunCheckpoint(
+        return TrainCheckpoint(
             model,
             learning_rate,
             optimizer,

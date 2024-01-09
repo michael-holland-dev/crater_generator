@@ -2,24 +2,35 @@ from torch.utils.data import Dataset
 from PIL import Image
 import os, glob
 from random import choice
+import numpy as np
 
-class CraterDataset:
-    def __init__(self, size, fpath):
+class CraterDataset(Dataset):
+    def __init__(self, size, fpath, transforms=[]):
         self.size = size
         self.fpath = fpath
         self.images = []
+        self.transforms = transforms
 
-        folder_set = next(iter(os.walk(self.fpath)))[1]
+        folder_set: list = list(next(iter(os.walk(self.fpath)))[1])
         
         for folder in folder_set:
-            planet_name = folder.split("_")[0]
-            images = map(lambda x: (planet_name, x), glob.glob(os.path.join(fpath, folder, "*.png")))
+            images = map(lambda x: (folder_set.index(folder), x), glob.glob(os.path.join(fpath, folder, "*.png")))
             self.images.extend(images)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, _):
+        # Randomly choose an image of a crater.
         body, image = choice(self.images)
-        ## Implement random transform (flip & rotation)
-        return body, Image.open(image)
+        image = np.array(Image.open(image))
+        image = image[:,:,0:3]
+
+        # Apply Transforms
+        for transform in self.transforms:
+            image = transform(image)
+
+        return body, image
+    
+    def add_transforms(self, transforms=[]):
+        self.transforms = transforms
     
     def __len__(self):
         return self.size

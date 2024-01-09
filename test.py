@@ -1,7 +1,10 @@
 from Dataset import CraterDataset
+from PIL import Image
 
 dataset = CraterDataset(500, "./data/")
 
-planet, body = dataset[2]
+planet, crater = dataset[2]
  
 print(planet)
+
+crater.show()

@@ -1,3 +1,2 @@
-from training.run_checkpoint import RunCheckpoint
-from training.hyper_sweep_checkpoint import HyperSweepCheckpoint
-from training.training_manager import TrainingManager
+from training.checkpointing.train_checkpoint import TrainCheckpoint
+from training.checkpointing.hyper_sweep_checkpoint import HyperSweepCheckpoint
